@@ -6,5 +6,5 @@ void newFunction() {
 }
 
 void anotherNewFunction() {
-	std::cout << "Here's another new function " << std::endl;
+	std::cout << "Here's another new function" << std::endl;
 }
