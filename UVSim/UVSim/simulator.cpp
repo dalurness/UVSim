@@ -2,7 +2,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "simulator.h"
+#include "simulator.h" 
 
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
