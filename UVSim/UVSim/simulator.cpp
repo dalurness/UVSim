@@ -137,4 +137,5 @@ void Simulator::read(int memoryLocation) {
 
 void Simulator::load(int memoryLocation) {
 	this->Accumulator = stoi(this->memory.at(memoryLocation));
+
 }
