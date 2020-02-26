@@ -2,7 +2,7 @@
 #include <string>
 #include <stdexcept>
 
-#include "simulator.h"
+#include "simulator.h" 
 
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
@@ -32,15 +32,44 @@ void Simulator::loadCommandIntoMemory(std::string command) {
 	}
 }
 
+/***Shaun & Dallin***/
 void Simulator::printMemory() {
-	for (int i = 0; i < this->memory.size(); ++i) {
-		if (i % 8 == 0 && i != 0)
-			std::cout << std::endl;
-		else if (i % 4 == 0 && i != 0)
-			std::cout << "   ";
-		std::cout << this->memory.at(i) << " ";
+	//Print Register contents.
+	std::wcout << "REGISTERS: " << std::endl;
+	std::cout << "Accumulator: " << this->Accumulator << std::endl;
+	std::cout << "Instruction Counter: " << this->InstructionCounter << std::endl;
+	std::cout << "Instruction Register: " << this->InstructionRegister << std::endl;
+	std::cout << "Operation Code: " << this->OperationCode << std::endl;
+	std::cout << "Operand: " << this->Operand << std::endl << std::endl;
+
+	//Print Memory Table (10x10).
+	std::cout << "MEMORY: " << std::endl;
+
+	//Fill vector with emtpy data to fill table.
+	for (int i = this->memory.size(); i < SIZE_OF_MEMORY; i++) {
+		this->memory.push_back("00000");
 	}
-	std::cout << std::endl << std::endl << this->InstructionCounter << std::endl << std::endl;
+	std::cout << "  ";
+	for (int i = 0; i < 10; i++) {
+		std::cout << "     ";
+		if (i < 10)
+			std::wcout << "0" << i;
+	}
+
+	int j = 0;
+	for (int i = 0; i < this->memory.size(); ++i) {
+		if (i % 10 == 0 /*&& i != 0*/) {
+			std::cout << std::endl;
+			if (i < 10)
+				std::wcout << "0";
+			std::cout << j << "  ";
+			j += 10;
+		}
+		//else if (i % 5 == 0 && i != 0)
+			//std::cout << "   ";
+		std::cout << this->memory.at(i) << "  ";
+	}
+	std::wcout << std::endl << std::endl;
 }
 
 void Simulator::executeProgram() {

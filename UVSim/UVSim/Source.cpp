@@ -5,9 +5,53 @@
 
 using namespace std;
 
+/***Shaun***/
 int main() {
 	
 	Simulator sim;
+	string cmd;
+	int memLocation = 0;
+	char again;
+	while (0 == 0) {
+		cout << "| Please enter your program one instruction at a time.   |" << endl;
+		cout << "| The memory location of your command will be displayed. |" << endl;
+		cout << "| Enter /0 to stop entering your program.                |" << endl;
+		cout << "==========================================================" << endl;
+
+		while (0 == 0) {
+			if (memLocation < 10) {
+				std::cout << "0" << memLocation << " : ";
+			}
+			else {
+				cout << memLocation << " : ";
+			}
+			cin >> cmd;
+			if (cmd == "/0") {
+				break;
+			}
+			sim.loadCommandIntoMemory(cmd);
+			//sim.loadCommandIntoMemory("+1002);
+			memLocation++;
+		}
+		cout << "~ Program Loading Complete ~" << endl << endl;
+		cout << "~ Begin Executing Program ~" << endl;
+		sim.executeProgram();
+		cout << endl << "~ Program Execution Complete ~" << endl << endl;
+		sim.printMemory();
+
+		cout << "Would you like to enter another program? (Y or N): ";
+		cin >> again;
+		if (again == 'Y' || again == 'y') {
+			cout << endl;
+			continue;
+		}
+		else {
+			cout << "Program Done.";
+			break;
+		}
+	}
+}
+/*
 	sim.loadCommandIntoMemory("+1002");
 	sim.loadCommandIntoMemory("+4300");
 	sim.loadCommandIntoMemory("+0000");
@@ -40,11 +84,7 @@ int main() {
 	sim.loadCommandIntoMemory("+3849");
 	sim.loadCommandIntoMemory("-3849");
 	sim.loadCommandIntoMemory("-3849");
-	sim.executeProgram();
-	sim.printMemory();
-	
-}
-
+	*/
 
 /*
 SOME SUEDOCODE FOR THE ORGANIZATION/REQUIREMENTS OF THE PROJECT
