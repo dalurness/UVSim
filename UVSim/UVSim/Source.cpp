@@ -49,42 +49,6 @@ int main() {
 		}
 	}
 }
-/*
-	sim.loadCommandIntoMemory("+1002");
-	sim.loadCommandIntoMemory("+1100");
-	sim.loadCommandIntoMemory("+1102");
-	sim.loadCommandIntoMemory("+4300");
-	sim.loadCommandIntoMemory("+0000");
-	sim.loadCommandIntoMemory("+0000");
-	sim.loadCommandIntoMemory("+0192");
-	sim.loadCommandIntoMemory("+1262");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("+3453");
-	sim.loadCommandIntoMemory("+0594");
-	sim.loadCommandIntoMemory("+8394");
-	sim.loadCommandIntoMemory("+0293");
-	sim.loadCommandIntoMemory("+1827");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("+1111");
-	sim.loadCommandIntoMemory("-9999");
-	sim.loadCommandIntoMemory("+1234");
-	sim.loadCommandIntoMemory("+0495");
-	sim.loadCommandIntoMemory("+9483");
-	sim.loadCommandIntoMemory("+0495");
-	sim.loadCommandIntoMemory("+9384");
-	sim.loadCommandIntoMemory("+1262");
-	sim.loadCommandIntoMemory("+3849");
-	sim.loadCommandIntoMemory("+3849");
-	sim.loadCommandIntoMemory("+3849");
-	sim.loadCommandIntoMemory("+3849");
-	sim.loadCommandIntoMemory("+3849");
-	sim.loadCommandIntoMemory("-3849");
-	sim.loadCommandIntoMemory("-3849");
-	*/
 
 /*
 SOME SUEDOCODE FOR THE ORGANIZATION/REQUIREMENTS OF THE PROJECT

@@ -3,7 +3,7 @@
 
 #include <vector>
 
-enum Instructions { READ = 10, WRITE = 11, LOAD = 20, STORE = 21, ADD = 30, SUBTRACT = 31, DIVIDE = 32, MULTIPLY = 33, BRANCH = 40, BRANCHNEG = 41, BRANCHZERO = 42, HALT = 43, MEMDUMP, BREAK, CONTINUE };
+enum Instructions { READ = 10, WRITE = 11, LOAD = 20, STORE = 21, ADD = 30, SUBTRACT = 31, DIVIDE = 32, MULTIPLY = 33, BRANCH = 40, BRANCHNEG = 41, BRANCHZERO = 42, HALT = 43, MEMDUMP = 52, BREAK = 50, CONTINUE = 51 };
 
 class Simulator
 {
@@ -16,6 +16,7 @@ public:
 	void loadCommandIntoMemory(std::string command);
 	void loadProgramFromFile(std::string filename);
 	void executeProgram();
+	bool executeInstruction(std::string nextCommand);
 private: 
 	//registers
 	int Accumulator = 0;
@@ -41,8 +42,8 @@ private:
 	void branchZero() {}; //no idea
 	void halt() {}; //end program
 	void memDump() {}; //dump memory onto screen for debugging
-	void breakLoop() {}; //break out of a loop
-	void continueLoop() {}; //not completely sure
+	void breakExecution(); //pause the execution
+	void continueExecution(); //continue executing
 
 	//extra functions
 	void printOutDetails() {}; //go through and print out the registers and run memDump() at the end of execution
