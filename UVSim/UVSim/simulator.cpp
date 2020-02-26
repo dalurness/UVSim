@@ -152,17 +152,20 @@ void Simulator::read(int memoryLocation) {
 	bool isNumber = false;
 	std::string stringNumber;
 	while (!isNumber) {
-		std::cout << "Please enter two digit number to insert into location " << memoryLocation << ": ";
+		std::cout << "Please enter a number four digits or less to insert into location " << memoryLocation << ": ";
 		std::cin >> stringNumber;
 
 		isNumber = true;
 		for (char x : stringNumber)
 			if (!isdigit(x)) { isNumber = false; };
-		if (isNumber && stoi(stringNumber) > 99)
-			std::cout << std::endl << "Number needs to be two digits" << std::endl << std::endl;
+		if (isNumber && stoi(stringNumber) > 9999)
+			std::cout << std::endl << "Number needs to be four digits or less" << std::endl << std::endl;
 	}
 	//insert number into memory location
-	this->memory.at(memoryLocation) = "000" + stringNumber;
+	for (size_t i = stringNumber.size(); i < 5; ++i)
+		stringNumber = "0" + stringNumber;
+
+	this->memory.at(memoryLocation) = stringNumber;
 }
 
 void Simulator::load(int memoryLocation) {
