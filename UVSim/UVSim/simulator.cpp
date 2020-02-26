@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-
 #include "simulator.h" 
+
+using namespace std;
+
 
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
@@ -33,6 +35,7 @@ void Simulator::loadCommandIntoMemory(std::string command) {
 }
 
 void Simulator::printMemory() {
+	cout << endl;
 	for (int i = 0; i < this->memory.size(); ++i) {
 		if (i % 8 == 0 && i != 0)
 			std::cout << std::endl;
@@ -132,9 +135,19 @@ void Simulator::read(int memoryLocation) {
 			std::cout << std::endl << "Number needs to be two digits" << std::endl << std::endl;
 	}
 	//insert number into memory location
-	this->memory.at(memoryLocation) = "000" + stringNumber;
+	string newValue = this->memory.at(memoryLocation);
+	newValue[3] = stringNumber[0];
+	newValue[4] = stringNumber[1];
+	this->memory.at(memoryLocation) = newValue;
 }
 
 void Simulator::load(int memoryLocation) {
 	this->Accumulator = stoi(this->memory.at(memoryLocation));
+}
+
+
+//Write word from memoryLocation to console
+void Simulator::write(int memoryLocation) {
+	cout << this->memory.at(memoryLocation);
+	cout << endl;
 }
