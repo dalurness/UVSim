@@ -36,9 +36,6 @@ void Simulator::loadCommandIntoMemory(std::string command) {
 
 /***Shaun & Dallin***/
 void Simulator::printMemory() {
-<<<<<<< HEAD
-	cout << endl;
-=======
 	//Print Register contents.
 	std::wcout << "REGISTERS: " << std::endl;
 	std::cout << "Accumulator: " << this->Accumulator << std::endl;
@@ -62,7 +59,6 @@ void Simulator::printMemory() {
 	}
 
 	int j = 0;
->>>>>>> upstream/master
 	for (int i = 0; i < this->memory.size(); ++i) {
 		if (i % 10 == 0 /*&& i != 0*/) {
 			std::cout << std::endl;
@@ -175,7 +171,6 @@ void Simulator::read(int memoryLocation) {
 
 void Simulator::load(int memoryLocation) {
 	this->Accumulator = stoi(this->memory.at(memoryLocation));
-<<<<<<< HEAD
 }
 
 
@@ -183,7 +178,4 @@ void Simulator::load(int memoryLocation) {
 void Simulator::write(int memoryLocation) {
 	cout << this->memory.at(memoryLocation);
 	cout << endl;
-=======
-
->>>>>>> upstream/master
 }
