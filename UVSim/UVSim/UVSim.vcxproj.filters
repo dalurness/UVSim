@@ -18,17 +18,11 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="newFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="simulator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="newFunction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="simulator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
