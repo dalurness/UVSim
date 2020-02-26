@@ -1,6 +1,4 @@
 #include <iostream>
-
-#include "newFunction.h"
 #include "simulator.h"
 
 using namespace std;
@@ -53,6 +51,8 @@ int main() {
 }
 /*
 	sim.loadCommandIntoMemory("+1002");
+	sim.loadCommandIntoMemory("+1100");
+	sim.loadCommandIntoMemory("+1102");
 	sim.loadCommandIntoMemory("+4300");
 	sim.loadCommandIntoMemory("+0000");
 	sim.loadCommandIntoMemory("+0000");

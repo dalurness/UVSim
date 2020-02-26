@@ -28,7 +28,7 @@ private:
 
 	//internal functions
 	void read(int memoryLocation); //Read a word from the keyboard into a specific location in memory.
-	void write(int memoryLocation) {}; //Write work from memoryLocation to console
+	void write(int memoryLocation); //Write word from memoryLocation to console
 	void load(int memoryLocation); //Load from memoryLocation to Accumulator
 	void store(int memoryLocation) {}; //Store from Accumulator to memoryLocation
 	void add(int memoryLocation) {}; //add word from memoryLocation to Accumulator and leave in Accumulator

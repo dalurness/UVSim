@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-
 #include "simulator.h" 
+
+using namespace std;
+
 
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
@@ -159,6 +161,7 @@ void Simulator::read(int memoryLocation) {
 		for (char x : stringNumber)
 			if (!isdigit(x)) { isNumber = false; };
 		if (isNumber && stoi(stringNumber) > 9999)
+			isNumber = false;
 			std::cout << std::endl << "Number needs to be four digits or less" << std::endl << std::endl;
 	}
 	//insert number into memory location
@@ -187,3 +190,10 @@ void Simulator::load(int memoryLocation) {
 //		
 //	}
 //}
+
+
+//Write word from memoryLocation to console
+void Simulator::write(int memoryLocation) {
+	cout << this->memory.at(memoryLocation);
+	cout << endl;
+}
