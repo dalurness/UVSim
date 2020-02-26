@@ -92,6 +92,7 @@ void Simulator::executeProgram() {
 				this->branchZero();
 				break;
 			case HALT:
+				//fill the rest of memory and then ->
 				this->printOutDetails();
 				return;
 				break;
@@ -138,3 +139,19 @@ void Simulator::read(int memoryLocation) {
 void Simulator::load(int memoryLocation) {
 	this->Accumulator = stoi(this->memory.at(memoryLocation));
 }
+
+//NEED TO DISCUSS IF WE ARE GOING TO ACCEPT NEGATIVES/STORE ACCUMULATOR AS STRING/HANDLE BIT OVERFLOW
+//void Simulator::add(int memoryLocation) {
+//	if (this->Accumulator > 9999) {
+//		
+//	}
+//	this->Accumulator = this->Accumulator + stoi(this->memory.at(memoryLocation).substr(1,5));
+//	if (this->Accumulator > 9999
+//}
+//
+//void Simulator::subtract(int memoryLocation) {
+//	this->Accumulator = this->Accumulator - stoi(this->memory.at(memoryLocation).substr(1, 5));
+//	if (this->Accumulator < 0) {
+//		
+//	}
+//}

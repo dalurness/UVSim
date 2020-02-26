@@ -7,7 +7,6 @@ enum Instructions { READ = 10, WRITE = 11, LOAD = 20, STORE = 21, ADD = 30, SUBT
 
 class Simulator
 {
-
 	const int SIZE_OF_MEMORY = 100;
 public:
 	Simulator() {};
