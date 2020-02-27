@@ -47,10 +47,6 @@ void Simulator::printMemory() {
 	//Print Memory Table (10x10).
 	std::cout << "MEMORY: " << std::endl;
 
-	//Fill vector with emtpy data to fill table.
-	for (int i = this->memory.size(); i < SIZE_OF_MEMORY; i++) {
-		this->memory.push_back("00000");
-	}
 	std::cout << "  ";
 	for (int i = 0; i < 10; i++) {
 		std::cout << "     ";
@@ -75,6 +71,10 @@ void Simulator::printMemory() {
 }
 
 void Simulator::executeProgram() {
+	//Fill vector with emtpy data to fill table.
+	for (size_t i = this->memory.size(); i < SIZE_OF_MEMORY; i++) {
+		this->memory.push_back("00000");
+	}
 	while (true) {
 		std::string nextCommand = this->memory.at(this->InstructionCounter);
 		//if (nextCommand.substr(0, 3) == ("0" + std::to_string(HALT)))
@@ -160,9 +160,10 @@ void Simulator::read(int memoryLocation) {
 		isNumber = true;
 		for (char x : stringNumber)
 			if (!isdigit(x)) { isNumber = false; };
-		if (isNumber && stoi(stringNumber) > 9999)
+		if (isNumber && stoi(stringNumber) > 9999) {
 			isNumber = false;
 			std::cout << std::endl << "Number needs to be four digits or less" << std::endl << std::endl;
+		}
 	}
 	//insert number into memory location
 	for (size_t i = stringNumber.size(); i < 5; ++i)
@@ -175,25 +176,51 @@ void Simulator::load(int memoryLocation) {
 	this->Accumulator = stoi(this->memory.at(memoryLocation));
 }
 
-//NEED TO DISCUSS IF WE ARE GOING TO ACCEPT NEGATIVES/STORE ACCUMULATOR AS STRING/HANDLE BIT OVERFLOW
-//void Simulator::add(int memoryLocation) {
-//	if (this->Accumulator > 9999) {
-//		
-//	}
-//	this->Accumulator = this->Accumulator + stoi(this->memory.at(memoryLocation).substr(1,5));
-//	if (this->Accumulator > 9999
-//}
-//
-//void Simulator::subtract(int memoryLocation) {
-//	this->Accumulator = this->Accumulator - stoi(this->memory.at(memoryLocation).substr(1, 5));
-//	if (this->Accumulator < 0) {
-//		
-//	}
-//}
+void Simulator::add(int memoryLocation) {
+	this->Accumulator = this->Accumulator + stoi(this->memory.at(memoryLocation).substr(1, 5));
+	while (this->Accumulator > 9999) {
+		this->Accumulator = this->Accumulator - 10000;
+	}
+}
 
+void Simulator::subtract(int memoryLocation) {
+	this->Accumulator = this->Accumulator - stoi(this->memory.at(memoryLocation).substr(1, 5));
+	if (this->Accumulator < 0) {
+		this->Accumulator = 0;
+	}
+}
+
+void Simulator::multiply(int memoryLocation) {
+	this->Accumulator = this->Accumulator * stoi(this->memory.at(memoryLocation).substr(1, 5));
+	while (this->Accumulator > 9999) {
+		this->Accumulator = this->Accumulator - 10000;
+	}
+}
+
+void Simulator::divide(int memoryLocation) {
+	if (stoi(this->memory.at(memoryLocation).substr(1, 5)) == 0) {
+		throw std::runtime_error("Attempt to divide by zero");
+	}
+	this->Accumulator = this->Accumulator / stoi(this->memory.at(memoryLocation).substr(1, 5));
+}
 
 //Write word from memoryLocation to console
 void Simulator::write(int memoryLocation) {
 	cout << this->memory.at(memoryLocation);
 	cout << endl;
+}
+
+void Simulator::store(int memoryLocation) {
+	if (this->Accumulator < 0) {
+		this->Accumulator = 0;
+	}
+	else if (this->Accumulator > 9999) {
+		while (this->Accumulator > 9999) {
+			this->Accumulator = this->Accumulator - 10000;
+		}
+	}
+	std::string value = std::to_string(this->Accumulator);
+	for (size_t i = value.size(); i < 5; ++i)
+		value = "0" + value;
+	this->memory.at(memoryLocation) = value;
 }
