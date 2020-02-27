@@ -117,5 +117,16 @@ SOME SUEDOCODE FOR THE ORGANIZATION/REQUIREMENTS OF THE PROJECT
 	//	the user must create their own memory locations for storage like 00000
 
 
+	+1020
+	+1021
+	+2020
+	+3021
+	+3120
+	+1122
+	+3321
+	+3220
+	+5200
+	+4300
+
 
 */
