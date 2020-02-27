@@ -16,6 +16,8 @@ public:
 	void loadCommandIntoMemory(std::string command);
 	void loadProgramFromFile(std::string filename);
 	void executeProgram();
+	void clearProgram();
+	void clearLast();
 private: 
 	//registers
 	int Accumulator = 0;
