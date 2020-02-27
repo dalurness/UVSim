@@ -5,40 +5,100 @@ using namespace std;
 
 /***Shaun***/
 int main() {
-	
+	//variables and instance of sim.
 	Simulator sim;
 	string cmd;
 	int memLocation = 0;
-	char again;
-	
-	cout << "| Please enter your program one instruction at a time.   |" << endl;
-	cout << "| The memory location of your command will be displayed. |" << endl;
-	cout << "| Enter /0 to stop entering your program.                |" << endl;
-	cout << "==========================================================" << endl;
+	char again = 'N';
+	int end = 0;
 
-	while (0 == 0) {
-		if (memLocation < 10) {
-			cout << "0" << memLocation << " : ";
-		}
-		else {
-			cout << memLocation << " : ";
-		}
-		cin >> cmd;
-		if (cmd == "/0") {
-			break;
-		}
-		sim.loadCommandIntoMemory(cmd);
-		//sim.loadCommandIntoMemory("+1002);
-		memLocation++;
-	}
-	cout << "~ Program Loading Complete ~" << endl << endl;
-	cout << "~ Begin Executing Program ~" << endl;
-	sim.executeProgram();
-	cout << endl << "~ Program Execution Complete ~" << endl << endl;
-	sim.printMemory();
+	//Get program from user.
+	while (end == 0) {
+		cout << "| Please enter your program one instruction at a time.   |" << endl;
+		cout << "| The memory location of your command will be displayed. |" << endl;
+		cout << "| Enter /0 to stop entering your program.                |" << endl;
+		cout << "==========================================================" << endl;
 		
-	cout << "Program Done.";
-	
+		while (0 == 0) {
+			if (memLocation < 10) {
+				cout << "0" << memLocation << " : ";
+			}
+			else {
+				cout << memLocation << " : ";
+			}
+			cin >> cmd;
+			if (cmd == "/0") {
+				break;
+			}
+
+			//Exception handling for loading commands into memory.
+			try {
+				sim.loadCommandIntoMemory(cmd);
+			}
+			catch (const exception e1) {
+				if (e1.what() == "Memory overflow") {
+					cout << "An exception occurred: " << e1.what() << endl << "Please re-enter program: " << endl << endl;
+					sim.clearProgram();
+					memLocation = 0;
+					continue;
+				}
+				else {
+					cout << "An exception occurred: " << e1.what() << endl << "Please re-enter instruction: " << endl;
+					sim.clearLast();
+					//sim.clearProgram();
+					//--memLocation;
+					continue;
+				}
+			}
+
+
+			//sim.loadCommandIntoMemory("+1002);
+			memLocation++;
+		}
+
+		cout << "~ Program Loading Complete ~" << endl << endl;
+		cout << "~ Begin Executing Program ~" << endl;
+
+		//Exception handling when executing program.
+		try {
+			sim.executeProgram();
+		}
+		catch (const exception e2) {
+			if (e2.what() == "No Halt Statement") {
+				cout << "An exception occurred: " << e2.what() << endl << "Please re-enter program: " << endl << endl;
+				sim.clearProgram();
+				memLocation = 0;
+				continue;
+			}
+			else {
+				cout << "An exception occurred: " << e2.what() << endl << "Please re-enter program: " << endl << endl;
+				sim.clearProgram();
+				memLocation = 0;
+				continue;
+			}
+			
+		}
+
+		cout << endl << "~ Program Execution Complete ~" << endl << endl;
+		sim.printMemory();
+
+		/*
+		//Ask for another program.
+		cout << "Would you like to enter another program? (Y/N): ";
+		cin >> again;
+		cout << endl << endl;
+		if (again == 'Y' || again == 'y') {
+			sim.clearProgram();
+			memLocation = 0;
+			again = 'N';
+			continue;
+		}
+		else
+			cout << "Program Done.";
+		*/
+		++end;
+		cout << "Program Done.";
+	}
 }
 /*
 	sim.loadCommandIntoMemory("+1002");
