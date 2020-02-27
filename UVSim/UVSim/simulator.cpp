@@ -3,8 +3,6 @@
 #include <stdexcept>
 #include "simulator.h" 
 
-using namespace std;
-
 
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
@@ -87,29 +85,30 @@ void Simulator::executeProgram() {
 		this->memory.push_back("00000");
 	}
 	while (true) {
-		std::string nextCommand = this->memory.at(this->InstructionCounter);
+		this->InstructionRegister = this->memory.at(this->InstructionCounter);
 		//if (nextCommand.substr(0, 3) == ("0" + std::to_string(HALT)))
 		//return;
 		
-		bool goOn = this->executeInstruction(nextCommand);
+		bool goOn = this->executeInstruction();
+		this->InstructionCounter++;
 		if (!goOn)
 			return;
-		}
 	}
 }
 
-bool Simulator::executeInstruction(string nextCommand) {
-	int memoryLocation = stoi(nextCommand.substr(3, 5));
+bool Simulator::executeInstruction() {
+	int memoryLocation = stoi(this->InstructionRegister.substr(3, 5));
+	this->OperationCode = stoi(this->InstructionRegister.substr(1, 2));
 
 	//check if command is positive or negative
-	switch (nextCommand[0]) {
+	switch (this->InstructionRegister[0]) {
 	case '1':
 		//do some negative command ish
 		break;
 	case '0':
 		//do some positive command ish
 
-		switch (stoi(nextCommand.substr(1, 2))) {
+		switch (this->OperationCode) {
 		case READ:
 			this->read(memoryLocation);
 			break;
@@ -222,13 +221,13 @@ void Simulator::divide(int memoryLocation) {
 
 //Write word from memoryLocation to console
 void Simulator::write(int memoryLocation) {
-	cout << this->memory.at(memoryLocation);
-	cout << endl;
+	std::cout << this->memory.at(memoryLocation);
+	std::cout << std::endl;
 }
 
 //pause the execution
 void Simulator::breakExecution() {
-	string cmd = "";
+	std::string cmd = "";
 
 	while(cmd != "+5100") {
 		std::cout << "Please enter in another instruction (to continue, enter +5100): ";
@@ -241,7 +240,7 @@ void Simulator::breakExecution() {
 				throw std::invalid_argument("Command must be a signed four-digit decimal number (+1234 or -5678)");
 			}
 		}
-		string trueCmd = "";
+		std::string trueCmd = "";
 		switch (sign) {
 			case '-':
 				trueCmd = ("1" + com);
@@ -256,16 +255,16 @@ void Simulator::breakExecution() {
 		if (std::stoi(trueCmd) == HALT) {
 			exit(0);
 		}
-
-		this->executeInstruction(trueCmd);
+		this->InstructionRegister = trueCmd;
+		this->executeInstruction();
 	}
 } 
 
 //continue executing
 void Simulator::continueExecution() {
-	std::cout << endl;
-	std::cout << "~ Continuing Execution ~" << endl;
-	std::cout << endl;
+	std::cout << std::endl;
+	std::cout << "~ Continuing Execution ~" << std::endl;
+	std::cout << std::endl;
 } 
 
 void Simulator::store(int memoryLocation) {

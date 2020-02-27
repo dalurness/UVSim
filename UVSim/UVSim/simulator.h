@@ -15,7 +15,7 @@ public:
 	void loadCommandIntoMemory(std::string command);
 	void loadProgramFromFile(std::string filename) {};
 	void executeProgram();
-	bool executeInstruction(std::string nextCommand);
+	bool executeInstruction();
 	void clearProgram();
 	void clearLast();
 private: 
@@ -42,7 +42,7 @@ private:
 	void branchNeg() {}; //no idea
 	void branchZero() {}; //no idea
 	void halt() {}; //end program
-  void memDump() { printMemory(); }; //dump memory onto screen for debugging
+	void memDump() { printMemory(); }; //dump memory onto screen for debugging
 	void breakExecution(); //pause the execution
 	void continueExecution(); //continue executing
 
