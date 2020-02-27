@@ -8,16 +8,16 @@ using namespace std;
 
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
-		throw std::out_of_range("Memory overflow");
+		throw std::runtime_error("Memory overflow");
 	}
 	if (command.size() != 5 ) {
-		throw std::invalid_argument("Command must be a signed four-digit decimal number (+1234 or -5678)");
+		throw std::runtime_error("Command must be a signed four-digit decimal number (+1234 or -5678)");
 	}
 	char sign = command[0];
 	std::string com = command.substr(1, 5);
 	for (char x : com) {
 		if (!isdigit(x)) {
-			throw std::invalid_argument("Command must be a signed four-digit decimal number (+1234 or -5678)");
+			throw std::runtime_error("Command must be a signed four-digit decimal number (+1234 or -5678)");
 		}
 	}
 	switch (sign) {
@@ -30,7 +30,17 @@ void Simulator::loadCommandIntoMemory(std::string command) {
 		this->memory.push_back("0" + com);
 		break;
 	default :
-		throw std::invalid_argument("Command must be a signed four-digit decimal number (+1234 or -5678)");
+		throw std::runtime_error("Command must be a signed four-digit decimal number (+1234 or -5678)");
+	}
+}
+
+void Simulator::clearProgram() {
+	this->memory.clear();
+}
+
+void Simulator::clearLast() {
+	if (this->memory.size() > 0) {
+		this->memory.pop_back();
 	}
 }
 
@@ -137,15 +147,15 @@ void Simulator::executeProgram() {
 				this->continueLoop();
 				break;
 			default:
-				throw std::logic_error("Invalid command found in memory at location: " + std::to_string(this->InstructionCounter));
+				throw runtime_error("Invalid command found in memory at location: " + std::to_string(this->InstructionCounter));
 			}
 			break;
 		default:
-			throw std::invalid_argument("First digit in each word must be a 1 or 0(- or +)");
+			throw std::runtime_error("First digit in each word must be a 1 or 0(- or +)");
 		}
 		this->InstructionCounter++;
 		if (this->InstructionCounter > this->memory.size()) {
-			throw std::out_of_range("No Halt Statement");
+			throw std::runtime_error("No Halt Statement");
 		}
 	}
 }

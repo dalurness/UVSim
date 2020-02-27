@@ -13,8 +13,10 @@ public:
 	Simulator(std::string filename) {}; //initialize a simulator with a textfile to load the program into the machine
 	void printMemory();
 	void loadCommandIntoMemory(std::string command);
-	void loadProgramFromFile(std::string filename);
+	void loadProgramFromFile(std::string filename) {};
 	void executeProgram();
+	void clearProgram();
+	void clearLast();
 private: 
 	//registers
 	int Accumulator = 0;
@@ -38,7 +40,6 @@ private:
 	void branch(int memoryLocation) {}; //branch to specific memory location
 	void branchNeg() {}; //no idea
 	void branchZero() {}; //no idea
-	void halt() {}; //end program
 	void memDump() { printMemory(); }; //dump memory onto screen for debugging
 	void breakLoop() {}; //break out of a loop
 	void continueLoop() {}; //not completely sure
