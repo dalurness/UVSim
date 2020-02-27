@@ -65,7 +65,8 @@ void Simulator::printMemory() {
 	}
 
 	int j = 0;
-	for (int i = 0; i < this->memory.size(); ++i) {
+
+	for (int i = 0; i < (int) this->memory.size(); ++i) {
 		if (i % 10 == 0 /*&& i != 0*/) {
 			std::cout << std::endl;
 			if (i < 10)
@@ -88,76 +89,81 @@ void Simulator::executeProgram() {
 	while (true) {
 		std::string nextCommand = this->memory.at(this->InstructionCounter);
 		//if (nextCommand.substr(0, 3) == ("0" + std::to_string(HALT)))
-		//	return;
-		int memoryLocation = stoi(nextCommand.substr(3, 5));
-		//check if command is positive or negative
-		switch (nextCommand[0]) {
-		case '1':
-			//do some negative command ish
-			break;
-		case '0':
-			//do some positive command ish
-
-			switch (stoi(nextCommand.substr(1, 2))) {
-			case READ:
-				this->read(memoryLocation);
-				break;
-			case WRITE:
-				this->write(memoryLocation);
-				break;
-			case LOAD:
-				this->load(memoryLocation);
-				break;
-			case STORE:
-				this->store(memoryLocation);
-				break;
-			case ADD:
-				this->add(memoryLocation);
-				break;
-			case SUBTRACT:
-				this->subtract(memoryLocation);
-				break;
-			case DIVIDE:
-				this->divide(memoryLocation);
-				break;
-			case MULTIPLY:
-				this->multiply(memoryLocation);
-				break;
-			case BRANCH:
-				this->branch(memoryLocation);
-				break;
-			case BRANCHNEG:
-				this->branchNeg();
-				break;
-			case BRANCHZERO:
-				this->branchZero();
-				break;
-			case HALT:
-				//fill the rest of memory and then ->
-				this->printOutDetails();
-				return;
-				break;
-			case MEMDUMP:
-				this->memDump();
-				break;
-			case BREAK:
-				this->breakLoop();
-				break;
-			case CONTINUE:
-				this->continueLoop();
-				break;
-			default:
-				throw runtime_error("Invalid command found in memory at location: " + std::to_string(this->InstructionCounter));
-			}
-			break;
-		default:
-			throw std::runtime_error("First digit in each word must be a 1 or 0(- or +)");
-		}
-		this->InstructionCounter++;
-		if (this->InstructionCounter > this->memory.size()) {
-			throw std::runtime_error("No Halt Statement");
+		//return;
+		
+		bool goOn = this->executeInstruction(nextCommand);
+		if (!goOn)
+			return;
 		}
 	}
+}
+
+bool Simulator::executeInstruction(string nextCommand) {
+	int memoryLocation = stoi(nextCommand.substr(3, 5));
+
+	//check if command is positive or negative
+	switch (nextCommand[0]) {
+	case '1':
+		//do some negative command ish
+		break;
+	case '0':
+		//do some positive command ish
+
+		switch (stoi(nextCommand.substr(1, 2))) {
+		case READ:
+			this->read(memoryLocation);
+			break;
+		case WRITE:
+			this->write(memoryLocation);
+			break;
+		case LOAD:
+			this->load(memoryLocation);
+			break;
+		case STORE:
+			this->store(memoryLocation);
+			break;
+		case ADD:
+			this->add(memoryLocation);
+			break;
+		case SUBTRACT:
+			this->subtract(memoryLocation);
+			break;
+		case DIVIDE:
+			this->divide(memoryLocation);
+			break;
+		case MULTIPLY:
+			this->multiply(memoryLocation);
+			break;
+		case BRANCH:
+			this->branch(memoryLocation);
+			break;
+		case BRANCHNEG:
+			this->branchNeg();
+			break;
+		case BRANCHZERO:
+			this->branchZero();
+			break;
+		case HALT:
+			this->printOutDetails();
+			return (false);
+		case MEMDUMP:
+			this->memDump();
+			break;
+		case BREAK:
+			this->breakExecution();
+			break;
+		case CONTINUE:
+			this->continueExecution();
+			break;
+		default:
+			throw std::logic_error("Invalid command found in memory at location: " + std::to_string(this->InstructionCounter));
+		}
+		break;
+	default:
+		throw std::invalid_argument("First digit in each word must be a 1 or 0(- or +)");
+	}
+
+	return true;
 }
 
 void Simulator::read(int memoryLocation) {
@@ -219,6 +225,48 @@ void Simulator::write(int memoryLocation) {
 	cout << this->memory.at(memoryLocation);
 	cout << endl;
 }
+
+//pause the execution
+void Simulator::breakExecution() {
+	string cmd = "";
+
+	while(cmd != "+5100") {
+		std::cout << "Please enter in another instruction (to continue, enter +5100): ";
+		std::cin >> cmd;
+
+		char sign = cmd[0];
+		std::string com = cmd.substr(1, 5);
+		for (char x : com) {
+			if (!isdigit(x)) {
+				throw std::invalid_argument("Command must be a signed four-digit decimal number (+1234 or -5678)");
+			}
+		}
+		string trueCmd = "";
+		switch (sign) {
+			case '-':
+				trueCmd = ("1" + com);
+				break;
+			case '+':
+				trueCmd = ("0" + com);
+				break;
+			default:
+				throw std::invalid_argument("Command must be a signed four-digit decimal number (+1234 or -5678)");
+		}
+
+		if (std::stoi(trueCmd) == HALT) {
+			exit(0);
+		}
+
+		this->executeInstruction(trueCmd);
+	}
+} 
+
+//continue executing
+void Simulator::continueExecution() {
+	std::cout << endl;
+	std::cout << "~ Continuing Execution ~" << endl;
+	std::cout << endl;
+} 
 
 void Simulator::store(int memoryLocation) {
 	if (this->Accumulator < 0) {
