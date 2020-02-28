@@ -3,7 +3,7 @@
 #include <stdexcept>
 #include "simulator.h" 
 
-
+//Dallin
 void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
 		throw std::runtime_error("Memory overflow");
@@ -32,10 +32,12 @@ void Simulator::loadCommandIntoMemory(std::string command) {
 	}
 }
 
+//Shaun
 void Simulator::clearProgram() {
 	this->memory.clear();
 }
 
+//Shaun
 void Simulator::clearLast() {
 	if (this->memory.size() > 0) {
 		this->memory.pop_back();
@@ -79,6 +81,7 @@ void Simulator::printMemory() {
 	std::wcout << std::endl << std::endl;
 }
 
+//Kristen
 void Simulator::executeProgram() {
 	//Fill vector with emtpy data to fill table.
 	for (size_t i = this->memory.size(); i < SIZE_OF_MEMORY; i++) {
@@ -96,6 +99,7 @@ void Simulator::executeProgram() {
 	}
 }
 
+//Dallin
 bool Simulator::executeInstruction() {
 	int memoryLocation = stoi(this->InstructionRegister.substr(3, 5));
 	this->OperationCode = stoi(this->InstructionRegister.substr(1, 2));
@@ -165,6 +169,7 @@ bool Simulator::executeInstruction() {
 	return true;
 }
 
+//Dallin
 void Simulator::read(int memoryLocation) {
 	bool isNumber = false;
 	std::string stringNumber;
@@ -187,10 +192,12 @@ void Simulator::read(int memoryLocation) {
 	this->memory.at(memoryLocation) = stringNumber;
 }
 
+//Dallin
 void Simulator::load(int memoryLocation) {
 	this->Accumulator = stoi(this->memory.at(memoryLocation));
 }
 
+//Dallin
 void Simulator::add(int memoryLocation) {
 	this->Accumulator = this->Accumulator + stoi(this->memory.at(memoryLocation).substr(1, 5));
 	while (this->Accumulator > 9999) {
@@ -201,6 +208,7 @@ void Simulator::add(int memoryLocation) {
 	}
 }
 
+//Dallin
 void Simulator::subtract(int memoryLocation) {
 	this->Accumulator = this->Accumulator - stoi(this->memory.at(memoryLocation).substr(1, 5));
 	while (this->Accumulator < -9999) {
@@ -211,6 +219,7 @@ void Simulator::subtract(int memoryLocation) {
 	}
 }
 
+//Dallin
 void Simulator::multiply(int memoryLocation) {
 	this->Accumulator = this->Accumulator * stoi(this->memory.at(memoryLocation).substr(1, 5));
 	while (this->Accumulator > 9999) {
@@ -221,6 +230,7 @@ void Simulator::multiply(int memoryLocation) {
 	}
 }
 
+//Dallin
 void Simulator::divide(int memoryLocation) {
 	if (stoi(this->memory.at(memoryLocation).substr(1, 5)) == 0) {
 		throw std::runtime_error("Attempt to divide by zero");
@@ -234,12 +244,14 @@ void Simulator::divide(int memoryLocation) {
 	}
 }
 
+//Kristen
 //Write word from memoryLocation to console
 void Simulator::write(int memoryLocation) {
 	std::cout << this->memory.at(memoryLocation);
 	std::cout << std::endl;
 }
 
+//Kristen
 //pause the execution
 void Simulator::breakExecution() {
 	std::string cmd = "";
@@ -275,6 +287,7 @@ void Simulator::breakExecution() {
 	}
 } 
 
+//Kristen
 //continue executing
 void Simulator::continueExecution() {
 	std::cout << std::endl;
@@ -282,6 +295,7 @@ void Simulator::continueExecution() {
 	std::cout << std::endl;
 } 
 
+//Dallin
 void Simulator::store(int memoryLocation) {
 	if (this->Accumulator < 0) {
 		this->Accumulator = 0;
