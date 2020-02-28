@@ -39,9 +39,9 @@ private:
 	void subtract(int memoryLocation); //subtract word from memoryLocation to Accumulator and leave in Accumulator
 	void multiply(int memoryLocation); //multiply word from memoryLocation to Accumulator and leave in Accumulator
 	void divide(int memoryLocation); //truncating division from memoryLocation to Accumulator and leave in Accumulator
-	void branch(int memoryLocation) {}; //branch to specific memory location
-	void branchNeg() {}; //no idea
-	void branchZero() {}; //no idea
+	void branch(int memoryLocation); //branch to specific memory location
+	void branchNeg(int memoryLocation); //no idea
+	void branchZero(int memoryLocation); //no idea
 	void halt() {}; //end program
 	void memDump() { printMemory(); }; //dump memory onto screen for debugging
 	void breakExecution(); //pause the execution

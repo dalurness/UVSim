@@ -137,10 +137,10 @@ bool Simulator::executeInstruction() {
 			this->branch(memoryLocation);
 			break;
 		case BRANCHNEG:
-			this->branchNeg();
+			this->branchNeg(memoryLocation);
 			break;
 		case BRANCHZERO:
-			this->branchZero();
+			this->branchZero(memoryLocation);
 			break;
 		case HALT:
 			this->printOutDetails();
@@ -196,12 +196,18 @@ void Simulator::add(int memoryLocation) {
 	while (this->Accumulator > 9999) {
 		this->Accumulator = this->Accumulator - 10000;
 	}
+	while (this->Accumulator < -9999) {
+		this->Accumulator = this->Accumulator + 10000;
+	}
 }
 
 void Simulator::subtract(int memoryLocation) {
 	this->Accumulator = this->Accumulator - stoi(this->memory.at(memoryLocation).substr(1, 5));
-	if (this->Accumulator < 0) {
-		this->Accumulator = 0;
+	while (this->Accumulator < -9999) {
+		this->Accumulator = this->Accumulator + 10000;
+	}
+	while (this->Accumulator > 9999) {
+		this->Accumulator = this->Accumulator - 10000;
 	}
 }
 
@@ -210,6 +216,9 @@ void Simulator::multiply(int memoryLocation) {
 	while (this->Accumulator > 9999) {
 		this->Accumulator = this->Accumulator - 10000;
 	}
+	while (this->Accumulator < -9999) {
+		this->Accumulator = this->Accumulator + 10000;
+	}
 }
 
 void Simulator::divide(int memoryLocation) {
@@ -217,6 +226,12 @@ void Simulator::divide(int memoryLocation) {
 		throw std::runtime_error("Attempt to divide by zero");
 	}
 	this->Accumulator = this->Accumulator / stoi(this->memory.at(memoryLocation).substr(1, 5));
+	while (this->Accumulator > 9999) {
+		this->Accumulator = this->Accumulator - 10000;
+	}
+	while (this->Accumulator < -9999) {
+		this->Accumulator = this->Accumulator + 10000;
+	}
 }
 
 //Write word from memoryLocation to console
@@ -280,4 +295,25 @@ void Simulator::store(int memoryLocation) {
 	for (size_t i = value.size(); i < 5; ++i)
 		value = "0" + value;
 	this->memory.at(memoryLocation) = value;
+}
+
+//Caleb
+void Simulator::branch(int memoryLocation) {
+	if (this->Accumulator > 0) {
+		this->InstructionCounter = memoryLocation - 1;
+	}
+}
+
+//Caleb
+void Simulator::branchNeg(int memoryLocation) {
+	if (this->Accumulator < 0) {
+		this->InstructionCounter = memoryLocation - 1;
+	}
+}
+
+//Caleb
+void Simulator::branchZero(int memoryLocation) {
+	if (this->Accumulator == 0) {
+		this->InstructionCounter = memoryLocation - 1;
+	}
 }
