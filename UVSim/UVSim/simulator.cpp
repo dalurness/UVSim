@@ -8,6 +8,8 @@ void Simulator::loadCommandIntoMemory(std::string command) {
 	if (this->memory.size() == SIZE_OF_MEMORY) {
 		throw std::runtime_error("Memory overflow");
 	}
+	if (command[0] == '#')
+		return;
 	if (command.size() != 5 ) {
 		throw std::runtime_error("Command must be a signed four-digit decimal number (+1234 or -5678)");
 	}
@@ -113,6 +115,11 @@ bool Simulator::executeInstruction() {
 		//do some positive command ish
 
 		switch (this->OperationCode) {
+		case LONG:
+			this->OperationCode = stoi(this->InstructionRegister.substr(3, 5));
+			this->InstructionCounter++;
+			this->InstructionRegister = this->memory.at(this->InstructionCounter);
+			memoryLocation = stoi(this->InstructionRegister.substr(1, 5));
 		case READ:
 			this->read(memoryLocation);
 			break;
@@ -178,17 +185,33 @@ void Simulator::read(int memoryLocation) {
 		std::cin >> stringNumber;
 
 		isNumber = true;
-		for (char x : stringNumber)
-			if (!isdigit(x)) { isNumber = false; };
-		if (isNumber && stoi(stringNumber) > 9999) {
+		if (stringNumber[0] == '+' || stringNumber[0] == '-') {
+			for (int i = 1; i < stringNumber.size(); ++i) {
+				if (!isdigit(stringNumber[i])) { isNumber = false; };
+			}
+		}
+		else {
+			for (char x : stringNumber)
+				if (!isdigit(x)) { isNumber = false; };
+		}
+		if (isNumber && (stoi(stringNumber) > 9999 || stoi(stringNumber) < -9999)) {
 			isNumber = false;
 			std::cout << std::endl << "Number needs to be four digits or less" << std::endl << std::endl;
 		}
 	}
-	//insert number into memory location
+	//take out sign
+	char sign = '+';
+	if (stringNumber[0] == '-' || stringNumber[0] == '+') {
+		sign = stringNumber[0];
+		stringNumber = stringNumber.substr(1, stringNumber.size());
+	}
+	//add leading zeroes for shorter numbers
 	for (size_t i = stringNumber.size(); i < 5; ++i)
 		stringNumber = "0" + stringNumber;
-
+	//put sign back in
+	if (sign == '-')
+		stringNumber[0] = '1';
+	//insert number into memory location
 	this->memory.at(memoryLocation) = stringNumber;
 }
 
@@ -308,6 +331,8 @@ void Simulator::store(int memoryLocation) {
 	std::string value = std::to_string(this->Accumulator);
 	for (size_t i = value.size(); i < 5; ++i)
 		value = "0" + value;
+	if (this->Accumulator < 0)
+		value[0] = '1';
 	this->memory.at(memoryLocation) = value;
 }
 
