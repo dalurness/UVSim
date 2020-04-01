@@ -1,5 +1,6 @@
 #include <iostream>
 #include "simulator.h"
+#include "UserProgram.h"
 
 using namespace std;
 
@@ -7,57 +8,24 @@ using namespace std;
 int main() {
 	//variables and instance of sim.
 	Simulator sim;
+	UserProgram program;
 	string cmd;
-	int memLocation = 0;
 	char again = 'N';
 	int end = 0;
 
 	//Get program from user.
 	while (end == 0) {
-		cout << "| Please enter your program one instruction at a time.   |" << endl;
-		cout << "| The memory location of your command will be displayed. |" << endl;
-		cout << "| Enter /0 to stop entering your program.                |" << endl;
-		cout << "==========================================================" << endl;
-		
-		while (0 == 0) {
-			if (memLocation < 10) {
-				cout << "0" << memLocation << " : ";
-			}
-			else {
-				cout << memLocation << " : ";
-			}
-			cin >> cmd;
-			if (cmd == "/0") {
-				break;
-			}
-
-			//Exception handling for loading commands into memory.
-			try {
-				sim.loadCommandIntoMemory(cmd);
-			}
-			catch (const exception e1) {
-				if (e1.what() == "Memory overflow") {
-					cout << "An exception occurred: " << e1.what() << endl << "Please re-enter program: " << endl << endl;
-					sim.clearProgram();
-					memLocation = 0;
-					continue;
-				}
-				else {
-					cout << "An exception occurred: " << e1.what() << endl << "Please re-enter instruction: " << endl;
-					sim.clearLast();
-					//sim.clearProgram();
-					//--memLocation;
-					continue;
-				}
-			}
-
-
-			//sim.loadCommandIntoMemory("+1002);
-			memLocation++;
+		string loadLetter = " ";
+		while (loadLetter != "c" && loadLetter != "f") {
+			cout << "Enter 'c' to load program fron CLI, enter 'f' to load from a file: ";
+			cin >> loadLetter;
 		}
-
-		cout << "~ Program Loading Complete ~" << endl << endl;
-		cout << "~ Begin Executing Program ~" << endl;
+		if (loadLetter == "f") {
+			program.fileProgramLoad(&sim);
+		}
+		else if (loadLetter == "c") {
+			program.cliProgramLoad(&sim);
+		}
 
 		//Exception handling when executing program.
 		try {
@@ -67,13 +35,11 @@ int main() {
 			if (e2.what() == "No Halt Statement") {
 				cout << "An exception occurred: " << e2.what() << endl << "Please re-enter program: " << endl << endl;
 				sim.clearProgram();
-				memLocation = 0;
 				continue;
 			}
 			else {
 				cout << "An exception occurred: " << e2.what() << endl << "Please re-enter program: " << endl << endl;
 				sim.clearProgram();
-				memLocation = 0;
 				continue;
 			}
 			
@@ -104,29 +70,12 @@ int main() {
 /*
 SOME SUEDOCODE FOR THE ORGANIZATION/REQUIREMENTS OF THE PROJECT
 
-	class sim
-		int Accumulator
-		int InstructionCounter
-		int InstructionRegister
-		int OperationCode
-		int Operand
-		vector[100] //memory size
-
-	//potentially have the vector grow with the instructions instead of just declaring
-	//	it with 100 locations to save memory. This is reliant on the idea that
-	//	the user must create their own memory locations for storage like 00000
-
-
-	+1020
-	+1021
-	+2020
-	+3021
-	+3120
-	+1122
-	+3321
-	+3220
-	+5200
-	+4300
-
+-File upload
+-1000 memory locations
+-modulus and exponent functions
+-GUI --Microsoft Forms
+-2 programs running simultaneously
+-testing functions
+-adding processing with negatives
 
 */
