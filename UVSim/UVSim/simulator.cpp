@@ -97,6 +97,7 @@ bool Simulator::scanForSeparator(int& memoryLocation) {
 		}
 		memoryLocation++;
 	}
+	return false;
 }
 
 //Kristen
@@ -376,3 +377,4 @@ void Simulator::branchZero(int memoryLocation) {
 	if (this->Accumulator == 0) {
 		this->InstructionCounter = memoryLocation - 1;
 	}
+}
