@@ -3,7 +3,7 @@
 
 #include <vector>
 
-enum Instructions { READ = 10, WRITE = 11, LOAD = 20, STORE = 21, LONG = 22, ADD = 30, SUBTRACT = 31, DIVIDE = 32, MULTIPLY = 33, BRANCH = 40, BRANCHNEG = 41, BRANCHZERO = 42, HALT = 43, MEMDUMP = 52, BREAK = 50, CONTINUE = 51 };
+enum Instructions { READ = 10, WRITE = 11, LOAD = 20, STORE = 21, LONG = 22, ADD = 30, SUBTRACT = 31, DIVIDE = 32, MULTIPLY = 33, BRANCH = 40, BRANCHNEG = 41, BRANCHZERO = 42, HALT = 43, MEMDUMP = 52, BREAK = 50, CONTINUE = 51, PROGSEP = 66};
 
 //Dallin
 class Simulator
@@ -19,6 +19,7 @@ public:
 	bool executeInstruction();
 	void clearProgram();
 	void clearLast();
+	bool scanForSeparator(int& memoryLocation);
 private: 
 	//registers
 	int Accumulator = 0;
@@ -40,8 +41,8 @@ private:
 	void multiply(int memoryLocation); //multiply word from memoryLocation to Accumulator and leave in Accumulator
 	void divide(int memoryLocation); //truncating division from memoryLocation to Accumulator and leave in Accumulator
 	void branch(int memoryLocation); //branch to specific memory location
-	void branchNeg(int memoryLocation); //no idea
-	void branchZero(int memoryLocation); //no idea
+	void branchNeg(int memoryLocation); //branch at negative
+	void branchZero(int memoryLocation); //branch at zero
 	void halt() {}; //end program
 	void memDump() { printMemory(); }; //dump memory onto screen for debugging
 	void breakExecution(); //pause the execution
@@ -50,27 +51,4 @@ private:
 	//extra functions
 	void printOutDetails() {}; //go through and print out the registers and run memDump() at the end of execution
 };
-
-////functions
-//printMemory()
-//getDataFromUser()
-//getDataFromFile()
-//executeProgram()
-////internal functions
-//read()10
-//write()11
-//load()20
-//store()21
-//add()30
-//subtract()31
-//divide()32
-//multiply()33
-//branch()40
-//branchNeg()41
-//branchZero()42
-//halt()43
-//MEMDUMP()
-//BREAK()
-//CONTINUE()
-
 #endif

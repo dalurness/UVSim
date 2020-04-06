@@ -46,7 +46,7 @@ void Simulator::clearLast() {
 	}
 }
 
-/***Shaun & Dallin***/
+//Shaun & Dallin
 void Simulator::printMemory() {
 	//Print Register contents.
 	std::wcout << "REGISTERS: " << std::endl;
@@ -81,6 +81,23 @@ void Simulator::printMemory() {
 		std::cout << this->memory.at(i) << "  ";
 	}
 	std::wcout << std::endl << std::endl;
+}
+
+//Kristen
+bool Simulator::scanForSeparator(int& memoryLocation) {
+	bool done = false;
+	while (!done) {
+		if (memoryLocation >= SIZE_OF_MEMORY) {
+			return false;
+		}
+		std::string cmd = (memory.at(memoryLocation)).substr(1, 3);
+		std::string sepvalue = std::to_string(PROGSEP);
+		if (cmd == sepvalue) {
+			return true;
+		}
+		memoryLocation++;
+	}
+	return false;
 }
 
 //Kristen
@@ -154,8 +171,11 @@ bool Simulator::executeInstruction() {
 			this->branchZero(memoryLocation);
 			break;
 		case HALT:
-			this->printOutDetails();
-			return (false);
+			if (!scanForSeparator(memoryLocation)) {
+				this->printOutDetails();
+				return (false);
+			}
+			break;
 		case MEMDUMP:
 			this->memDump();
 			break;
@@ -164,6 +184,8 @@ bool Simulator::executeInstruction() {
 			break;
 		case CONTINUE:
 			this->continueExecution();
+			break;
+		case PROGSEP:
 			break;
 		default:
 			throw std::logic_error("Invalid command found in memory at location: " + std::to_string(this->InstructionCounter));

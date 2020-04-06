@@ -4,7 +4,7 @@
 
 using namespace std;
 
-/***Shaun***/
+//Shaun
 int main() {
 	//variables and instance of sim.
 	Simulator sim;
